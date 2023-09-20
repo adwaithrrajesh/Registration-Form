@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Form from './pages/Form'
+import RegistrationDetails from './pages/RegistrationDetails'
 
 function App() {
 
@@ -8,7 +9,7 @@ function App() {
     <BrowserRouter>
       <Routes>
       <Route path='/' element={<Form/>}/>
-      <Route path='/viewDetails'/>
+      <Route path='/viewDetails' element={<RegistrationDetails/>}/>
       </Routes>
     </BrowserRouter>
     </>
