@@ -13,11 +13,39 @@ export default function RegistrationDetails() {
         SetRegisterations(RegistrationDetails.registrationDetails);
     }
 
+    const formatDate = (inputDate) => {
+      const date = new Date(inputDate);
+      const year = date.getFullYear();
+      const month = (date.getMonth() + 1).toString().padStart(2, "0");
+      const day = date.getDate().toString().padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+    
+    const DateDisplay = ({ date })=>{
+      const formattedDate = formatDate(date);
+      return <span>{formattedDate}</span>;
+    }
+
+
+    const calculateAge = (dateOfBirth)=>{
+      const dob = new Date(dateOfBirth);
+      const today = new Date();
+      const age = today.getFullYear() - dob.getFullYear();
+    
+      // Check if the birthday has occurred this year already
+      if (today.getMonth() < dob.getMonth() ||
+        (today.getMonth() === dob.getMonth() && today.getDate() < dob.getDate())) {
+        return age - 1; // Subtract 1 year if the birthday hasn't occurred yet
+      }
+    
+      return age;
+    }
+
   return (
     <>
     {
         registerations && 
-        registerations.map((data)=>(
+        registerations.map((data,index)=>(
             <div class="my-1 px-1 w-full md:w-1/2 sm:w-1/2 lg:my-4 lg:px-4 lg:w-full cursor-pointer">
         <article class="overflow-hidden rounded-lg shadow-lg bg-white h-[auto]">
           <header class="bg-blue-500 text-white py-4 text-center">
@@ -26,7 +54,7 @@ export default function RegistrationDetails() {
       
           <div class="p-4">
             <div class="mb-3">
-              <h2 class="text-lg font-semibold">Registration No.</h2>
+              <h2 class="text-lg font-semibold">Registration No.{index+1}</h2>
             </div>
       
             <div class="flex flex-wrap mb-3">
@@ -66,12 +94,12 @@ export default function RegistrationDetails() {
       
             <div class="flex flex-wrap mb-3">
               <div class="w-full md:w-1/2 text-gray-600">Date of Birth:</div>
-              <div class="w-full md:w-1/2">{data.dateOfBirth}</div>
+              <div class="w-full md:w-1/2"><DateDisplay date={data.dateOfBirth} /></div>
             </div>
       
             <div class="flex flex-wrap mb-3">
-              <div class="w-full md:w-1/2 text-gray-600">Age:</div>
-              <div class="w-full md:w-1/2"></div>
+              <div class="w-full md:w-1/2 text-gray-600">Age: </div>
+              <div class="w-full md:w-1/2">{calculateAge(data.dateOfBirth)}</div>
             </div>
       
           </div>  

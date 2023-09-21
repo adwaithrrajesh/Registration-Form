@@ -1,7 +1,7 @@
 const { body, validationResult } = require('express-validator');
 
 const validateForm = [
-    body('firstName').notEmpty().isAlpha() .withMessage('First name is required and should contain alphabets only.'),
+    body('firstName').notEmpty().withMessage('First name is required and should contain alphabets only.'),
     body('lastName').notEmpty().isAlpha().withMessage('Last name is required and should contain alphabets only.'),
     body('email').isEmail().withMessage('Invalid email address.'),
     body('gender').notEmpty().isIn(['male', 'female', 'other']).withMessage('Gender is required and must be one of the specified options.'),

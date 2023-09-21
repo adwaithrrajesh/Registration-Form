@@ -1,7 +1,44 @@
-const registrationModel = require('../model/registrationShema')
+const registrationModel = require('../model/registrationShema');
+const { Country, State, City } = require('country-state-city');
 
 
 module.exports={
+    
+    
+    getAllCountryDetails:(req,res)=>{
+        try {     
+            const AllCountries = Country.getAllCountries();
+            return res.status(200).json({countries:AllCountries});
+        } catch (error) {
+            return res.status(500).json({msg:"Internal Server Error"});
+        }
+    },
+
+    getStates: async(req,res)=>{
+        try {
+            const isoCode = req.body.isoCode
+            const states = State.getStatesOfCountry(isoCode);
+            return res.status(200).json({states:states})
+        } catch (error) {
+            return res.status(500).json({msg:"Internal server error"})
+        }
+    },
+
+    getCities: async(req,res)=>{
+        try {
+            const stateCode = req.body.stateCode;
+            const countryIsoCode = req.body.countryIsoCode;
+            const AllCities = await City.getAllCities(); 
+            const cities = AllCities.filter((entry) => {
+              return entry.countryCode === countryIsoCode && entry.stateCode === stateCode;
+            });
+            return res.status(200).json({ cities: cities });
+          } catch (error) {
+            console.error(error);
+            return res.status(500).json({ error: 'Internal server error' });
+          }
+    },
+
     insertForm : async(req,res)=>{
         try {     
             const email = req.body.email;
@@ -23,5 +60,5 @@ module.exports={
         } catch (error) {
             return res.status(500).json({msg:"Internal server error"})
         }
-    }
+    },
 }
